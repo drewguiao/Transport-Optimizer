@@ -2,7 +2,7 @@ package utility;
 
 import java.util.Scanner;
 
-import exceptions.ExceedsCapacityException;
+import exceptions.ExceedsLimitException;
 
 import model.SimplexMatrix;
 
@@ -68,7 +68,7 @@ public final class Utility {
 	}
 	
 	private static void validateNonNegativity(float value){
-		if(value <0){
+		if(value < 0){
 			throw new RuntimeException("Value should not be negative!");
 		}
 	}

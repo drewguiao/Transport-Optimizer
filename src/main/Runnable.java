@@ -4,7 +4,7 @@ package main;
 import utility.Utility;
 import java.util.Scanner;
 
-import exceptions.ExceedsCapacityException;
+import exceptions.ExceedsLimitException;
 import model.SimplexMatrix;
 
 public class Runnable {

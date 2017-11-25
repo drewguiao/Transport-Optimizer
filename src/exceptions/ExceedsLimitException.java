@@ -3,7 +3,7 @@ package exceptions;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-public class ExceedsCapacityException extends Exception {
+public class ExceedsLimitException extends Exception {
 
 	@Override
 	public String getMessage() {
