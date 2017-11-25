@@ -1,5 +1,7 @@
 package main;
 
+
+import utility.Utility;
 import java.util.Scanner;
 
 import model.SimplexMatrix;
@@ -11,43 +13,23 @@ public class Runnable {
 		int numOfSources;
 		int numOfDestinations;
 			
-		System.out.println("Enter # sources: ");
+		System.out.print("Enter # sources: ");
 		numOfSources = scanner.nextInt();
 		
-		System.out.println("Enter # destinations:");
+		System.out.print("Enter # destinations:");
 		numOfDestinations = scanner.nextInt();
 		
 		//initializeMatrix
 		SimplexMatrix matrix = new SimplexMatrix(numOfSources,numOfDestinations);
 		
-		setUpCost(matrix);
-		setUpCapacity(matrix.getCapacity());
-		setUpDemand(matrix.getDemand());
+		Utility.setUpCost(matrix);
+		Utility.setUpCapacity(matrix.getCapacity());
+		Utility.setUpDemand(matrix.getDemand());
+		Utility.validateCoefficients(matrix);
+		
+		System.out.println(matrix.toString());
 		
 	}
 
-	private static void setUpDemand(float[] demand) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	private static void setUpCapacity(float[] capacity) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void setUpCost(SimplexMatrix matrix) {
-		int row = matrix.getRow();
-		int column = matrix.getColumn();
-		float cost = 0;
-		for(int i = 0; i < row; i++){
-			for(int j = 0 ; j < column; j++){
-				System.out.println("COST on Source");
-				cost = scanner.nextFloat();
-				matrix.setCost(cost,i,j);
-			}
-		}
-	}
-
-	
 }
