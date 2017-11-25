@@ -45,7 +45,7 @@ public final class Utility {
 		}
 	}
 
-	public static void validateCoefficients(SimplexMatrix matrix) throws ExceedsCapacityException{
+	public static void validateCoefficients(SimplexMatrix matrix) throws ExceedsLimitException{
 		// TODO Auto-generated method stub
 		int row = matrix.getRow();
 		int column = matrix.getColumn();

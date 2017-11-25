@@ -10,7 +10,7 @@ import model.SimplexMatrix;
 public class Runnable {
 	static Scanner scanner = new Scanner(System.in);
 	
-	public static void main(String[] args) throws ExceedsCapacityException{
+	public static void main(String[] args) throws ExceedsLimitException{
 		int numOfSources;
 		int numOfDestinations;
 			
