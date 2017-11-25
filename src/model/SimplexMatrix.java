@@ -53,7 +53,7 @@ public class SimplexMatrix {
 	public float getCapacityTotalOnRow(int index){
 		float total = 0;
 		for(int i = 0; i < index; i++){
-			total = total + this.capacity[i];
+			total = total + matrix[index][i];
 		}
 		return total;
 	}
@@ -61,7 +61,7 @@ public class SimplexMatrix {
 	public float getDemandTotalOnColumn(int index){
 		float total = 0;
 		for(int i = 0; i < index; i++){
-			total = total + this.demand[i];
+			total = total + matrix[i][index];
 		}
 		return total;
 	}
