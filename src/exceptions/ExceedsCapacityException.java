@@ -3,12 +3,8 @@ package exceptions;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-public class UtilityError extends Exception {
+public class ExceedsCapacityException extends Exception {
 
-	public UtilityError(String origin, float total, float max){
-		System.out.println(origin+ ": Total("+total+") > Max("+max+")");
-	}
-	
 	@Override
 	public String getMessage() {
 		// TODO Auto-generated method stub
