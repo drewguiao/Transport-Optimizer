@@ -4,12 +4,13 @@ package main;
 import utility.Utility;
 import java.util.Scanner;
 
+import exceptions.ExceedsCapacityException;
 import model.SimplexMatrix;
 
 public class Runnable {
 	static Scanner scanner = new Scanner(System.in);
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws ExceedsCapacityException{
 		int numOfSources;
 		int numOfDestinations;
 			
