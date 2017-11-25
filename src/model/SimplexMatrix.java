@@ -50,6 +50,22 @@ public class SimplexMatrix {
 		this.demand[i] = demand;
 	}
 	
+	public float getCapacityTotalOnRow(int index){
+		float total = 0;
+		for(int i = 0; i < index; i++){
+			total = total + this.capacity[i];
+		}
+		return total;
+	}
+	
+	public float getDemandTotalOnColumn(int index){
+		float total = 0;
+		for(int i = 0; i < index; i++){
+			total = total + this.demand[i];
+		}
+		return total;
+	}
+	
 	
 	@Override
 	public String toString(){
