@@ -75,8 +75,8 @@ public class SimplexMatrix extends Constants{
 	
 	private String joinVariables(List<String> listOfVariables) {
 		// TODO Auto-generated method stub
-		String tokensWithComma = String.join("+", listOfVariables);
-		tokensWithComma+= "= Z";
+		String tokensWithComma = String.join("+ ", listOfVariables);
+		tokensWithComma+= Z_VARIABLE;
 		return tokensWithComma;
 	}
 
