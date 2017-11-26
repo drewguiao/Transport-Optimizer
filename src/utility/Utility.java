@@ -73,5 +73,16 @@ public final class Utility {
 		}
 	}
 
+	public static void setUpObjectiveFunction(SimplexMatrix matrix) {
+		// TODO Auto-generated method stub
+		int length = matrix.getColumn();
+		matrix.initializeObjectiveFunction(length);
+		for(int i=0;i<length;i++){
+			System.out.print("Enter value for V["+i+"]: ");
+			matrix.setObjectiveFunctionCoefficients(scanner.nextFloat(), i);
+			
+		}
+	}
+
 	
 }
