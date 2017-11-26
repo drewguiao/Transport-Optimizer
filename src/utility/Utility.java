@@ -75,6 +75,7 @@ public final class Utility {
 
 	public static void setUpObjectiveFunction(SimplexMatrix matrix) {
 		// TODO Auto-generated method stub
+		System.out.println("===SETTING UP OBJECTIVE FUNCTION===");
 		int length = matrix.getColumn();
 		matrix.initializeObjectiveFunction(length);
 		for(int i=0;i<length;i++){
