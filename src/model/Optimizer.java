@@ -102,7 +102,14 @@ public class Optimizer extends Constants{
 	}
 	
 	void optimize() {
-		JFrame optimizedTableauFrame = new JFrame("");
+		String status = "";
+		if(optimizationStatus == MAXIMIZE){
+			status += "Maximize";
+		}
+		else{
+			status+= "Minimize";
+		}
+		JFrame optimizedTableauFrame = new JFrame(status);
 		JPanel tableauPanel = new JPanel();
 		JTextArea tableauMatrix= new JTextArea();
 		Dimension d = new Dimension(700, 700);
@@ -122,7 +129,7 @@ public class Optimizer extends Constants{
 			tableauMatrix.append(viewBasicSolution());
 			tableauMatrix.append(viewTableau());
 		}
-		
+		tableauMatrix.append(viewAnswers());
 		tableauPanel.add(tableauMatrix);
 		tableauPanel.add(scroll);
 		optimizedTableauFrame.add(tableauPanel);
@@ -132,6 +139,23 @@ public class Optimizer extends Constants{
 		optimizedTableauFrame.validate();
 	}
 	
+	private String viewAnswers() {
+		// TODO Auto-generated method stub
+		String retVal = "";
+		for(int i = 0; i < basicSolution.length-1;i++){
+			for(int j = 0; j < numOfVariables;j++){
+				retVal+= "x["+i+"] = "+basicSolution[i]+ "\n";
+				i = i+ 1;
+			}
+			for(int j = 0; j < numOfConstraints;j++){
+				retVal+= "s["+i+"] = "+basicSolution[i]+ "\n";
+				i = i+1;
+			}
+			retVal+= "z = "+basicSolution[i]; i=i+1;
+		}
+		
+		return retVal;
+	}
 	String viewTableau() {
 		// TODO Auto-generated method stub
 		String retVal = "==\n";

@@ -86,6 +86,8 @@ public class OptimizerUi extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			final int MINIMIZE = 1;
 			Optimizer uO = new Optimizer(numOfConstraints, numOfVariables);
+
+			uO.getMode(MINIMIZE);
 			uO.getObjFuncCoeff(objFunctionCoeff);
 			uO.getConstCoeff(constCoeffList);
 			uO.appendSlackVariables();
@@ -93,7 +95,6 @@ public class OptimizerUi extends JFrame{
 			uO.viewTableau();
 			uO.updateBasicSolution();
 			uO.optimize();
-			uO.getMode(MINIMIZE);
 		}
 	};
 	
@@ -103,7 +104,8 @@ public class OptimizerUi extends JFrame{
 			final int MAXIMIZE = 2;
 			Optimizer uO = new Optimizer(numOfConstraints, numOfVariables);
 			
-			
+
+			uO.getMode(MAXIMIZE);
 			uO.getObjFuncCoeff(objFunctionCoeff);
 			uO.getConstCoeff(constCoeffList);
 			uO.appendSlackVariables();
@@ -111,7 +113,6 @@ public class OptimizerUi extends JFrame{
 			uO.viewTableau();
 			uO.updateBasicSolution();
 			uO.optimize();
-			uO.getMode(MAXIMIZE);
 		}
 	};
 	
