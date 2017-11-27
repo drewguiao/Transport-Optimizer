@@ -64,20 +64,20 @@ public class SimplexMatrix extends Constants{
 		this.objectiveFunction[index] = value;
 	}
 	
-	public String viewObjectiveFunction(){
+	public void viewObjectiveFunction(){
 		List<String> listOfVariables = new ArrayList<String>();
 		for(int i = 0; i < objectiveFunction.length;i++){
 			listOfVariables.add(""+objectiveFunction[i]+"v["+i+"] ");
 		}
 		
-		return joinVariables(listOfVariables);
+		 System.out.println(joinVariables(listOfVariables));
 	}
 	
 	private String joinVariables(List<String> listOfVariables) {
 		// TODO Auto-generated method stub
-		String tokensWithComma = String.join("+ ", listOfVariables);
-		tokensWithComma+= Z_VARIABLE;
-		return tokensWithComma;
+		String tokensWithPlusSign = String.join("+ ", listOfVariables);
+		tokensWithPlusSign+= Z_VARIABLE;
+		return tokensWithPlusSign;
 	}
 
 	public float getCapacityTotalOnRow(int index){
@@ -96,55 +96,68 @@ public class SimplexMatrix extends Constants{
 		return total;
 	}
 	
-
-	public float[][] setUpInitialTableau() {
-		// TODO Auto-generated method stub
-		int numOfSlackVariables = row;
-		this.initialTableauColumn = numOfSlackVariables + row + Z_COLUMN + ANSWER_COLUMN;
-		this.initialTableauRow = row + OBJECTIVE_FUNCTION_COLUMN;
-		
+	public void setUpInitialTableau(){
+		int numOfSlackColumns = row + column;
+		int numOfDemandColumns = row * column;
+		initialTableauRow = row + column + OBJECTIVE_FUNCTION_ROW;
+		initialTableauColumn = column + numOfDemandColumns + numOfSlackColumns + Z_COLUMN + ANSWER_COLUMN;
 		initialTableau = new float[initialTableauRow][initialTableauColumn];
 		
-		for(int i =0; i < row; i++){
-			for(int j = 0; j < column ; j++){
+		int answerColumnIndex = initialTableauColumn - 1;
+		int zColumnIndex = answerColumnIndex - 1;
+		
+		//appendCostConstraints
+		for(int i = 0 ; i < row;i++){
+			for(int j = 0 ; j < column ; j++){
 				initialTableau[i][j] = matrix[i][j];
-				
-				//set Up slack Variables
-				if(i+column == j){
+			}
+		}
+		//append Cost total
+		for(int i = 0 ; i < capacity.length ; i++){
+			initialTableau[i][answerColumnIndex] = capacity[i];
+		}
+		
+		//appendDemandConstraints
+		int displacement = 0;
+		for(int i = row; i < column + row ; i++){
+			
+			for(int j = column ; j < numOfDemandColumns ; j++){
+				initialTableau[i][j+displacement] = 1;
+			}
+			displacement = displacement + (row*column)/column;
+		}
+		//append demand total
+		for(int i = row ; i < demand.length + row; i++){
+			initialTableau[i][answerColumnIndex] = demand[i-row];
+		}
+		//appendObjectiveFunction
+		for(int i = 0; i < objectiveFunction.length; i++){
+			initialTableau[row + column][i] = -objectiveFunction[i];
+		}
+		initialTableau[initialTableauRow - 1][zColumnIndex] = 1;
+		
+		
+		//append slack variables
+		for(int i = 0; i < numOfSlackColumns;i++){
+			for(int j = column + numOfDemandColumns; j < column + numOfDemandColumns + numOfSlackColumns;j++){
+				if(i+(column + numOfDemandColumns) == j){
 					initialTableau[i][j] = SLACK_VARIABLE_COEFFICIENT;
 				}
+				
 			}
 		}
-		append(CAPACITY,capacity);
-		append(DEMAND,demand);
-		return initialTableau;
 	}
 	
-	
-	
-	private void append(int tag, float[] list) {
-		// TODO Auto-generated method stub
-		length = list.length;
-		int i = 0;
-		int flag = 0;
-		
-		switch(tag){
-		case CAPACITY:
-			for(i = 0; i < length; i++){
-				initialTableau[i][initialTableauRow] = list[i];
-				flag = i;
+	public void viewInitialTableau(){
+		for(int i = 0 ; i < initialTableauRow ; i++){
+			for(int j = 0; j < initialTableauColumn; j++){
+				System.out.print(initialTableau[i][j]+" ");
 			}
-			break;
-		case DEMAND:
-			for(i = flag;i < length + flag; i++){
-
-				initialTableau[i][initialTableauColumn] = list[i];
-			}
-			break;
-		default:
-			break;
+			System.out.println("");
 		}
 	}
+	
+	
 
 	@Override
 	public String toString(){
@@ -171,7 +184,4 @@ public class SimplexMatrix extends Constants{
 		this.objectiveFunction = new float[length];
 		
 	}
-
-	
-	
 }

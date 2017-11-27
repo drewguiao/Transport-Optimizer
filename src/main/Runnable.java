@@ -25,27 +25,14 @@ public class Runnable {
 		SimplexMatrix matrix = new SimplexMatrix(numOfSources,numOfDestinations);
 		
 		Utility.setUpObjectiveFunction(matrix);
+		matrix.viewObjectiveFunction();
+		Utility.setUpCost(matrix);
+		Utility.setUpCapacity(matrix.getCapacity());
+		Utility.setUpDemand(matrix.getDemand());
+		matrix.setUpInitialTableau();
+		matrix.viewInitialTableau();
 		
-		System.out.println(matrix.viewObjectiveFunction());
-		
-		
-		
-//		Utility.setUpCost(matrix);
-//		Utility.setUpCapacity(matrix.getCapacity());
-//		Utility.setUpDemand(matrix.getDemand());
-//		Utility.validateCoefficients(matrix);
-//		
-//		initialTableau = matrix.setUpInitialTableau();
-//		
-//		for(int i = 0; i < numOfSources+1;i++){
-//			for(int j = 0; j < numOfDestinations+1; j++){
-//				System.out.print(initialTableau[i][j]+ " ");;
-//			}
-//			System.out.println("");
-//		}
-		
-		
-		System.out.println(matrix.toString());
+//		System.out.println(matrix.toString());
 		
 	}
 
