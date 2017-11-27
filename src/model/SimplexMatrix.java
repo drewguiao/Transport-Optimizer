@@ -3,7 +3,9 @@ package model;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
@@ -194,9 +196,52 @@ public class SimplexMatrix extends Constants{
 		double[][] mat = initialTableau;
 		while(bottomRowHasNegative(mat)){
 			int pivotColumnIndex = getNegativeWithHighestAbsoluteValue(mat);
-			
+			int pivotElementIndex = getLowestTestRatio(mat,pivotColumnIndex);
+			normalizePivotElementRow(mat,pivotElementIndex,pivotColumnIndex);
+			applyGaussJordan(mat,pivotElementIndex, pivotColumnIndex);
 		}
 		
+	}
+
+	private void applyGaussJordan(double[][] mat, int pivotElementIndex, int pivotColumnIndex) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i < initialTableauRow;i++){
+			for(int j = pivotColumnIndex; j < initialTableauColumn;j++){
+				double valueToZero = initialTableau[i][pivotColumnIndex];
+				//row = row - (vZero * pvtRow);
+				if(i != pivotElementIndex){
+					double pivotRowElement = mat[pivotElementIndex][j];
+					mat[i][j] = mat[i][j] - (valueToZero * pivotRowElement);	
+				}
+			}
+		}
+		
+	}
+
+	private void normalizePivotElementRow(double[][] mat, int pivotElementIndex,int pivotColumnIndex) {
+		// TODO Auto-generated method stub
+		double pivotElement = mat[pivotElementIndex][pivotColumnIndex];
+		
+		for(int i = 0; i < initialTableauColumn;i++){
+			mat[pivotElementIndex][i] = mat[pivotElementIndex][i] / pivotElement;
+		}
+	}
+
+	private int getLowestTestRatio(double[][] mat, int pivotColumnIndex) {
+		// TODO Auto-generated method stub
+		List<BigDecimal> testRatioList = new ArrayList<>();
+		Map<BigDecimal,Integer> ratioIndexMap = new HashMap<>();
+		int answerColumnIndex = initialTableauColumn - 1;
+		for(int i = 0 ; i < initialTableauRow; i++){
+			if(mat[i][pivotColumnIndex] > 0 ){
+				BigDecimal testRatio = BigDecimal.valueOf(initialTableau[i][answerColumnIndex]/initialTableau[i][pivotColumnIndex]);
+				testRatioList.add(testRatio);
+				ratioIndexMap.put(testRatio, i);
+			}
+		}
+		Collections.sort(testRatioList);
+		
+		return 	ratioIndexMap.get(testRatioList.get(0));
 	}
 
 	private int getNegativeWithHighestAbsoluteValue(double[][] mat) {
@@ -227,4 +272,6 @@ public class SimplexMatrix extends Constants{
 		}
 		return false;
 	}
+
+	
 }
