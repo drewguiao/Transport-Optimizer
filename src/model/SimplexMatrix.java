@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import utility.Constants;
 
@@ -197,21 +196,32 @@ public class SimplexMatrix extends Constants{
 		while(bottomRowHasNegative(mat)){
 			int pivotColumnIndex = getNegativeWithHighestAbsoluteValue(mat);
 			int pivotElementIndex = getLowestTestRatio(mat,pivotColumnIndex);
+			
 			normalizePivotElementRow(mat,pivotElementIndex,pivotColumnIndex);
+			viewMatrix(mat);
 			applyGaussJordan(mat,pivotElementIndex, pivotColumnIndex);
+			viewMatrix(mat);
 		}
 		
+	}
+	public void viewMatrix(double[][] mat){
+		for(int i = 0 ; i < initialTableauRow ; i++){
+			for(int j = 0; j < initialTableauColumn; j++){
+				System.out.print(mat[i][j]+" ");
+			}
+			System.out.println("");
+		}
 	}
 
 	private void applyGaussJordan(double[][] mat, int pivotElementIndex, int pivotColumnIndex) {
 		// TODO Auto-generated method stub
 		for(int i = 0; i < initialTableauRow;i++){
-			for(int j = pivotColumnIndex; j < initialTableauColumn;j++){
+			if(i != pivotElementIndex){
 				double valueToZero = initialTableau[i][pivotColumnIndex];
-				//row = row - (vZero * pvtRow);
-				if(i != pivotElementIndex){
+				for(int j = pivotColumnIndex; j < initialTableauColumn;j++){
 					double pivotRowElement = mat[pivotElementIndex][j];
-					mat[i][j] = mat[i][j] - (valueToZero * pivotRowElement);	
+					System.out.println("MAT[i][j] = " +mat[i][j]+ "- ("+valueToZero+"*"+pivotRowElement);
+					mat[i][j] = mat[i][j] - (valueToZero * pivotRowElement);						
 				}
 			}
 		}
@@ -221,7 +231,7 @@ public class SimplexMatrix extends Constants{
 	private void normalizePivotElementRow(double[][] mat, int pivotElementIndex,int pivotColumnIndex) {
 		// TODO Auto-generated method stub
 		double pivotElement = mat[pivotElementIndex][pivotColumnIndex];
-		
+		System.out.println("PIVOT ELEMENT:" + pivotElement);
 		for(int i = 0; i < initialTableauColumn;i++){
 			mat[pivotElementIndex][i] = mat[pivotElementIndex][i] / pivotElement;
 		}
