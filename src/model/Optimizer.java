@@ -18,6 +18,7 @@ public class Optimizer extends Constants{
 	private double[] basicSolution;
 	private int numOfRows, numOfColumns, numOfVariables,answerColumnIndex;
 	private Scanner console = new Scanner(System.in);
+	private int optimizationStatus;
 	
 	public Optimizer(int numOfConstraints, int numOfVariables){
 		this.numOfRows = numOfConstraints + OBJECTIVE_FUNCTION_ROW;
@@ -29,11 +30,27 @@ public class Optimizer extends Constants{
 		
 		this.setUpObjectiveFunction();
 		this.setUpOptimizer();
+		this.setOptimization();
 		this.appendSlackVariables();
 		this.appendObjectiveFunctionCoeff();
 		this.viewTableau();
 		this.updateBasicSolution();
 		this.optimize();
+	}
+	private void setOptimization() {
+		// TODO Auto-generated method stub
+		int choice = 0;
+		System.out.println("[1] Minimize");
+		System.out.println("[2] Maximize");
+		System.out.print("Choice: ");
+		choice = console.nextInt();
+		switch(choice){
+		case MINIMIZE:  this.optimizationStatus = MINIMIZE;
+		
+			break; 
+		case MAXIMIZE: this.optimizationStatus = MAXIMIZE;
+			break;
+		}
 	}
 	private void updateBasicSolution() {
 		basicSolution = new double[numOfColumns];
@@ -186,18 +203,18 @@ public class Optimizer extends Constants{
 	}
 	
 	private void setUpOptimizer(){
-		for(int i = 0; i < numOfRows-1;i++){
+		for(int i = 0; i < numOfRows -1; i++){
 			for(int j = 0; j < numOfVariables;j++){
 				System.out.print("Enter coefficient for S["+i+"]D["+j+"]: ");
 				double coefficient = console.nextDouble();
 				setValue(coefficient,i,j);
 			}
-				System.out.print("Enter value for Answer["+i+"]: ");
-				double answer = console.nextDouble();
-				setValue(answer,i,answerColumnIndex);
-		}
+			System.out.print("Enter value for Answer["+i+"]: ");
+			double answer = console.nextDouble();
+			setValue(answer,i,answerColumnIndex);
+		}			
 	}
-	
+
 	
 	public void setValue(double value, int i, int j){
 		this.tableau[i][j] = value;
@@ -215,9 +232,19 @@ public class Optimizer extends Constants{
 
 	private void appendObjectiveFunctionCoeff() {
 		// TODO Auto-generated method stub
+
 		for(int i = 0; i < numOfVariables; i++){
-			tableau[numOfRows-1][i] = -objectiveFunction[i];
+			if(optimizationStatus == MINIMIZE){
+
+				tableau[numOfRows-1][i] = objectiveFunction[i];
+			}else{
+
+				tableau[numOfRows-1][i] = -objectiveFunction[i];	
+			}
+			
 		}
 		tableau[numOfRows-1][numOfColumns-2] = Z_COEFFICIENT;
+
+		
 	}
 }
