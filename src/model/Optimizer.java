@@ -52,7 +52,7 @@ public class Optimizer extends Constants{
 	}
 	private void viewBasicSolution() {
 		// TODO Auto-generated method stub
-		System.out.println("Basic Solution: ");
+		System.out.print("Basic Solution: ");
 		for(int i=0;i<basicSolution.length;i++){
 			System.out.print(+basicSolution[i]+" ");
 		}
@@ -101,7 +101,6 @@ public class Optimizer extends Constants{
 				double valueToZero = tableau[i][pivotColumnIndex];
 				for(int j = pivotColumnIndex; j < numOfColumns;j++){
 					double pivotRowElement = tableau[pivotElementIndex][j];
-					System.out.println("MAT["+i+"]["+j+"] = " +tableau[i][j]+ "- ("+valueToZero+"*"+pivotRowElement);
 					tableau[i][j] = tableau[i][j] - (valueToZero * pivotRowElement);
 					
 				}
@@ -113,7 +112,6 @@ public class Optimizer extends Constants{
 	private void normalizePivotElementRow(double[][] mat, int pivotElementIndex, int pivotColumnIndex) {
 		// TODO Auto-generated method stub
 		double pivotElement = mat[pivotElementIndex][pivotColumnIndex];
-		System.out.println("PIVOT ELEMENT:" + pivotElement);
 		for(int i = 0; i < numOfColumns;i++){
 			mat[pivotElementIndex][i] = mat[pivotElementIndex][i] / pivotElement;
 		}
@@ -166,13 +164,27 @@ public class Optimizer extends Constants{
 	private void setUpObjectiveFunction() {
 		// TODO Auto-generated method stub
 		this.objectiveFunction = new double[numOfVariables];
-		
+		System.out.println("SET-UP OBJECTIVE FUNCTION: ");
 		for(int i = 0; i < numOfVariables;i++){
 			System.out.print("Enter coefficient for X["+i+"]: ");
 			double coefficient = console.nextDouble();
-			objectiveFunction[i] = -coefficient;
+			objectiveFunction[i] = coefficient;
 		}
+		
+		viewObjectiveFunction();
 	}
+	private void viewObjectiveFunction() {
+		// TODO Auto-generated method stub
+		List<String> objectiveFunctionCoeff = new ArrayList<String>();
+		for(int i=0;i< numOfVariables;i++){
+			objectiveFunctionCoeff.add(objectiveFunction[i]+"x["+i+"] ");
+		}
+		String objectiveFunction = String.join("+ ", objectiveFunctionCoeff);
+		objectiveFunction+= Z_VARIABLE;
+		System.out.println(objectiveFunction);
+		
+	}
+	
 	private void setUpOptimizer(){
 		for(int i = 0; i < numOfRows-1;i++){
 			for(int j = 0; j < numOfVariables;j++){
@@ -204,7 +216,7 @@ public class Optimizer extends Constants{
 	private void appendObjectiveFunctionCoeff() {
 		// TODO Auto-generated method stub
 		for(int i = 0; i < numOfVariables; i++){
-			tableau[numOfRows-1][i] = objectiveFunction[i];
+			tableau[numOfRows-1][i] = -objectiveFunction[i];
 		}
 		tableau[numOfRows-1][numOfColumns-2] = Z_COEFFICIENT;
 	}
