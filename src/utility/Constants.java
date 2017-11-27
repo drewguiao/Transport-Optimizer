@@ -15,4 +15,8 @@ public class Constants {
 	protected final static int Z_COEFFICIENT = 1;
 	
 	
+	protected final int MINIMIZE = 1;
+	protected final int MAXIMIZE = 2;
+	
+	
 }
