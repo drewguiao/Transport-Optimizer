@@ -20,12 +20,12 @@ public class Runnable extends Constants{
 		while(state!=0){
 			System.out.println("[1] Ultimate-Optimizer");
 			System.out.println("[2] Transport-Optimizer");
-			System.out.println("[3] Exit");
+			System.out.println("[0] Exit");
 			System.out.print("Choice: ");
 			state = scanner.nextInt();
 			switch(state){
 			case ULTIMATE_OPTIMIZER:
-
+				
 				System.out.print("Enter number of constraints:");
 				int constraints = scanner.nextInt();
 				System.out.print("Enter number of variables:");
