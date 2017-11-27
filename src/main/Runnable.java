@@ -13,7 +13,6 @@ public class Runnable {
 	public static void main(String[] args) throws ExceedsLimitException{
 		int numOfSources;
 		int numOfDestinations;
-		float[][] initialTableau;
 		
 		System.out.print("Enter # sources: ");
 		numOfSources = scanner.nextInt();
@@ -31,7 +30,7 @@ public class Runnable {
 		Utility.setUpDemand(matrix.getDemand());
 		matrix.setUpInitialTableau();
 		matrix.viewInitialTableau();
-		
+		matrix.applyOptimization();
 //		System.out.println(matrix.toString());
 		
 	}

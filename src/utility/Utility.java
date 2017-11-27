@@ -9,23 +9,23 @@ import model.SimplexMatrix;
 public final class Utility {
 	private static Scanner scanner = new Scanner(System.in);
 	
-	public static void setUpDemand(float[] demand) {
+	public static void setUpDemand(double[] demand) {
 		// TODO Auto-generated method stub
 		int length = demand.length;
 		for(int i = 0; i < length ; i++){
 			System.out.print("DEM on D["+i+"]: ");
-			demand[i] = scanner.nextFloat();
+			demand[i] = scanner.nextDouble();
 			validateNonNegativity(demand[i]);
 		}
 		
 	}
 
-	public static void setUpCapacity(float[] capacity) {
+	public static void setUpCapacity(double[] capacity) {
 		// TODO Auto-generated method stub
 		int length = capacity.length;
 		for(int i = 0; i < length ; i++){
 			System.out.print("CAP on S["+i+"]: ");
-			capacity[i] = scanner.nextFloat();
+			capacity[i] = scanner.nextDouble();
 			validateNonNegativity(capacity[i]);
 		}
 		
@@ -34,11 +34,11 @@ public final class Utility {
 	public static void setUpCost(SimplexMatrix matrix) {
 		int row = matrix.getRow();
 		int column = matrix.getColumn();
-		float cost = 0;
+		double cost = 0;
 		for(int i = 0; i < row; i++){
 			for(int j = 0 ; j < column; j++){
 				System.out.print("COST on S["+i+"]D["+j+"]: ");
-				cost = scanner.nextFloat();
+				cost = scanner.nextDouble();
 				validateNonNegativity(cost);
 				matrix.setCost(cost,i,j);
 			}
@@ -49,7 +49,7 @@ public final class Utility {
 		// TODO Auto-generated method stub
 		int row = matrix.getRow();
 		int column = matrix.getColumn();
-		float rowCapacity, rowCapacityTotal, columnDemandTotal, columnDemand;
+		double rowCapacity, rowCapacityTotal, columnDemandTotal, columnDemand;
 		
 		for(int i = 0; i < row; i++){
 			rowCapacityTotal = matrix.getCapacityTotalOnRow(i);
@@ -67,7 +67,7 @@ public final class Utility {
 		}
 	}
 	
-	private static void validateNonNegativity(float value){
+	private static void validateNonNegativity(double value){
 		if(value < 0){
 			throw new RuntimeException("Value should not be negative!");
 		}
@@ -80,7 +80,7 @@ public final class Utility {
 		matrix.initializeObjectiveFunction(length);
 		for(int i=0;i<length;i++){
 			System.out.print("Enter coefficient for x["+i+"]: ");
-			matrix.setObjectiveFunctionCoefficients(scanner.nextFloat(), i);
+			matrix.setObjectiveFunctionCoefficients(scanner.nextDouble(), i);
 			
 		}
 	}

@@ -1,7 +1,11 @@
 package model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import utility.Constants;
 
@@ -9,26 +13,26 @@ public class SimplexMatrix extends Constants{
 	private int length, row, column;
 	private int initialTableauRow;
 	private int initialTableauColumn;
-	private float[][] matrix;
-	private float[][] initialTableau;
-	private float[] capacity, demand;
-	private float[] objectiveFunction;
+	private double[][] matrix;
+	private double[][] initialTableau;
+	private double[] capacity, demand;
+	private double[] objectiveFunction;
 	
 	
 	public SimplexMatrix(int numOfSources, int numOfDestinations) {
-		this.matrix = new float[numOfSources][numOfDestinations];
+		this.matrix = new double[numOfSources][numOfDestinations];
 		this.length = numOfSources * numOfDestinations;
 		this.row = numOfSources;
 		this.column = numOfDestinations;
-		this.capacity = new float[row];
-		this.demand = new float[column];
+		this.capacity = new double[row];
+		this.demand = new double[column];
 	}
 	
 	public int getLength(){
 		return this.length;
 	}
 	
-	public float[][] getMatrix(){
+	public double[][] getMatrix(){
 		return this.matrix;
 	}
 	
@@ -40,27 +44,27 @@ public class SimplexMatrix extends Constants{
 		return this.column;
 	}
 	
-	public float[] getCapacity(){
+	public double[] getCapacity(){
 		return this.capacity;
 	}
 	
-	public float[] getDemand(){
+	public double[] getDemand(){
 		return this.demand;
 	}
 	
-	public void setCost(float cost, int i, int j){
+	public void setCost(double cost, int i, int j){
 		this.matrix[i][j] = cost;
 	}
 	
-	public void setCapacity(float capacity, int i){
+	public void setCapacity(double capacity, int i){
 		this.capacity[i] = capacity;
 	};
 	
-	public void setDemand(float demand, int i){
+	public void setDemand(double demand, int i){
 		this.demand[i] = demand;
 	}
 	
-	public void setObjectiveFunctionCoefficients(float value, int index){
+	public void setObjectiveFunctionCoefficients(double value, int index){
 		this.objectiveFunction[index] = value;
 	}
 	
@@ -80,16 +84,16 @@ public class SimplexMatrix extends Constants{
 		return tokensWithPlusSign;
 	}
 
-	public float getCapacityTotalOnRow(int index){
-		float total = 0;
+	public double getCapacityTotalOnRow(int index){
+		double total = 0;
 		for(int i = 0; i < index; i++){
 			total = total + matrix[index][i];
 		}
 		return total;
 	}
 	
-	public float getDemandTotalOnColumn(int index){
-		float total = 0;
+	public double getDemandTotalOnColumn(int index){
+		double total = 0;
 		for(int i = 0; i < index; i++){
 			total = total + matrix[i][index];
 		}
@@ -101,7 +105,7 @@ public class SimplexMatrix extends Constants{
 		int numOfDemandColumns = row * column;
 		initialTableauRow = row + column + OBJECTIVE_FUNCTION_ROW;
 		initialTableauColumn = column + numOfDemandColumns + numOfSlackColumns + Z_COLUMN + ANSWER_COLUMN;
-		initialTableau = new float[initialTableauRow][initialTableauColumn];
+		initialTableau = new double[initialTableauRow][initialTableauColumn];
 		
 		int answerColumnIndex = initialTableauColumn - 1;
 		int zColumnIndex = answerColumnIndex - 1;
@@ -181,7 +185,46 @@ public class SimplexMatrix extends Constants{
 
 	public void initializeObjectiveFunction(int length) {
 		// TODO Auto-generated method stub
-		this.objectiveFunction = new float[length];
+		this.objectiveFunction = new double[length];
 		
+	}
+
+	public void applyOptimization() {
+		// TODO Auto-generated method stub
+		double[][] mat = initialTableau;
+		while(bottomRowHasNegative(mat)){
+			int pivotColumnIndex = getNegativeWithHighestAbsoluteValue(mat);
+			
+		}
+		
+	}
+
+	private int getNegativeWithHighestAbsoluteValue(double[][] mat) {
+		// TODO Auto-generated method stub
+		List<BigDecimal> negativeList = new ArrayList<>();
+		for(int i = 0; i < initialTableauColumn - 1; i++){
+			if(mat[initialTableauRow-1][i] < 0){
+				negativeList.add(BigDecimal.valueOf(mat[initialTableauRow-1][i]));
+			}
+		}
+		Collections.sort(negativeList);
+		
+		for(int i=0; i < initialTableauColumn - 1; i++){
+			if(negativeList.get(0).doubleValue() == initialTableau[initialTableauRow-1][i]){
+				return i;
+			}
+		}
+		return 0;
+		
+	}
+
+	private boolean bottomRowHasNegative(double[][] mat) {
+		// TODO Auto-generated method stub
+		for(int i = 0 ; i < initialTableauColumn-1;i++){
+			if(mat[initialTableauRow-1][i] < 0 ){
+				return true;
+			}
+		}
+		return false;
 	}
 }
