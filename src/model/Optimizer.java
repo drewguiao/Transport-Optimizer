@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JTextField;
+
 import utility.Constants;
 
 public class Optimizer extends Constants{
@@ -28,14 +30,7 @@ public class Optimizer extends Constants{
 		
 		this.tableau = new double[numOfRows][numOfColumns];
 		
-		this.setUpObjectiveFunction();
-		this.setUpOptimizer();
-		this.setOptimization();
-		this.appendSlackVariables();
-		this.appendObjectiveFunctionCoeff();
-		this.viewTableau();
-		this.updateBasicSolution();
-		this.optimize();
+
 	}
 	private void setOptimization() {
 		// TODO Auto-generated method stub
@@ -52,7 +47,7 @@ public class Optimizer extends Constants{
 			break;
 		}
 	}
-	private void updateBasicSolution() {
+	void updateBasicSolution() {
 		basicSolution = new double[numOfColumns];
 		// TODO Auto-generated method stub
 		for(int i = 0; i < numOfColumns ; i++){
@@ -88,7 +83,7 @@ public class Optimizer extends Constants{
 		return false;
 	}
 	
-	private void optimize() {
+	void optimize() {
 		// TODO Auto-generated method stub
 		while(bottomRowHasNegative(tableau)){
 			int pivotColumnIndex = getNegativeWithHighestMagnitude(tableau);
@@ -101,7 +96,7 @@ public class Optimizer extends Constants{
 		
 	}
 	
-	private void viewTableau() {
+	void viewTableau() {
 		// TODO Auto-generated method stub
 		for(int i=0;i<numOfRows;i++){
 			for(int j = 0;j<numOfColumns;j++){
@@ -220,7 +215,7 @@ public class Optimizer extends Constants{
 		this.tableau[i][j] = value;
 	}
 	
-	private void appendSlackVariables(){
+	void appendSlackVariables(){
 		for(int i = 0; i < numOfRows ; i++){
 			for(int j = numOfVariables; j < numOfColumns - (Z_COLUMN + ANSWER_COLUMN); j++){
 				if(i+numOfVariables == j){
@@ -230,7 +225,7 @@ public class Optimizer extends Constants{
 		}
 	}
 
-	private void appendObjectiveFunctionCoeff() {
+	void appendObjectiveFunctionCoeff() {
 		// TODO Auto-generated method stub
 
 		for(int i = 0; i < numOfVariables; i++){
@@ -239,12 +234,45 @@ public class Optimizer extends Constants{
 				tableau[numOfRows-1][i] = objectiveFunction[i];
 			}else{
 
-				tableau[numOfRows-1][i] = -objectiveFunction[i];	
+				tableau[numOfRows-1][i] = (objectiveFunction[i]* -1);	
 			}
 			
 		}
 		tableau[numOfRows-1][numOfColumns-2] = Z_COEFFICIENT;
 
+		
+	}
+	public void getObjFuncCoeff(List<JTextField> objFunctionCoeff) {
+		// TODO Auto-generated method stub
+		
+		// TODO Auto-generated method stub
+		this.objectiveFunction = new double[numOfVariables];
+		
+		for(int i=0;i<objFunctionCoeff.size();i++){
+			objectiveFunction[i] = Double.parseDouble(objFunctionCoeff.get(i).getText());
+		}
+		
+		viewObjectiveFunction();
+		
+	}
+	public void getConstCoeff(List<JTextField> constCoeffList) {
+		// TODO Auto-generated method stub
+		int k = 0;
+		for(int i = 0; i < numOfRows -1; i++){
+			for(int j = 0; j < numOfVariables;j++){
+				setValue(Double.parseDouble(constCoeffList.get(k).getText()),i,j);
+				k++;
+			}
+			setValue(Double.parseDouble(constCoeffList.get(k).getText()),i,answerColumnIndex);
+			k++;
+		}	
+	}
+	public void getMode(int mode) {
+		// TODO Auto-generated method stub
+		switch(mode){
+		case MAXIMIZE: this.optimizationStatus = MAXIMIZE; break;
+		case MINIMIZE: this.optimizationStatus = MINIMIZE; break;
+		}
 		
 	}
 }

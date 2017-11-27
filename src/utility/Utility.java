@@ -3,7 +3,7 @@ package utility;
 import java.util.Scanner;
 
 import exceptions.ExceedsLimitException;
-
+import model.OptimizerUi;
 import model.SimplexMatrix;
 
 public final class Utility {
@@ -83,6 +83,11 @@ public final class Utility {
 			matrix.setObjectiveFunctionCoefficients(scanner.nextDouble(), i);
 			
 		}
+	}
+
+	public static void initializeUI() {
+		// TODO Auto-generated method stub
+		OptimizerUi ui = new OptimizerUi();
 	}
 
 	
