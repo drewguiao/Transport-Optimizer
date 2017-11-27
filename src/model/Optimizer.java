@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Dimension;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +11,12 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import utility.Constants;
 
@@ -18,7 +24,7 @@ public class Optimizer extends Constants{
 	private double[][] tableau;
 	private double[] objectiveFunction;
 	private double[] basicSolution;
-	private int numOfRows, numOfColumns, numOfVariables,answerColumnIndex;
+	private int numOfRows, numOfColumns, numOfVariables,answerColumnIndex,numOfConstraints;
 	private Scanner console = new Scanner(System.in);
 	private int optimizationStatus;
 	
@@ -27,7 +33,7 @@ public class Optimizer extends Constants{
 		this.numOfColumns = numOfConstraints + numOfVariables + Z_COLUMN + ANSWER_COLUMN;
 		this.numOfVariables = numOfVariables;
 		this.answerColumnIndex = numOfColumns - 1;
-		
+		this.numOfConstraints = numOfConstraints;
 		this.tableau = new double[numOfRows][numOfColumns];
 		
 
@@ -50,7 +56,7 @@ public class Optimizer extends Constants{
 	void updateBasicSolution() {
 		basicSolution = new double[numOfColumns];
 		// TODO Auto-generated method stub
-		for(int i = 0; i < numOfColumns ; i++){
+		for(int i = 0; i < numOfColumns-1 ; i++){
 			if(isColumnBasic(i)){
 				for(int j=0;j<numOfRows;j++){
 					if(tableau[j][i] == 1.00){
@@ -59,16 +65,28 @@ public class Optimizer extends Constants{
 				}
 			}
 		}
-		viewBasicSolution();
 		
 	}
-	private void viewBasicSolution() {
+	private String viewBasicSolution() {
 		// TODO Auto-generated method stub
-		System.out.print("Basic Solution: ");
-		for(int i=0;i<basicSolution.length;i++){
-			System.out.print(+basicSolution[i]+" ");
+
+		
+		String retVal = "Basic Solution: ";
+		
+		
+		for(int i=0;i< numOfVariables;i++){
+			retVal+= "x["+i+"] ";
 		}
-		System.out.println("");
+		
+		for(int i=0;i<numOfConstraints;i++){
+			retVal+= "s["+i+"] ";
+		}
+		retVal += "z \n";
+		for(int i=0;i<basicSolution.length-1;i++){
+			retVal += +basicSolution[i]+" ";
+		}
+		retVal += "\n";
+		return retVal;
 	}
 	private boolean isColumnBasic(int columnIndex) {
 		// TODO Auto-generated method stub
@@ -84,28 +102,50 @@ public class Optimizer extends Constants{
 	}
 	
 	void optimize() {
+		JFrame optimizedTableauFrame = new JFrame("");
+		JPanel tableauPanel = new JPanel();
+		JTextArea tableauMatrix= new JTextArea();
+		Dimension d = new Dimension(700, 700);
+		tableauMatrix.setSize(d);
+		tableauMatrix.setEditable(false);
+		JScrollPane scroll = new JScrollPane(tableauMatrix);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		// TODO Auto-generated method stub
+		tableauMatrix.append(viewBasicSolution());
+		tableauMatrix.append(viewTableau());
 		while(bottomRowHasNegative(tableau)){
 			int pivotColumnIndex = getNegativeWithHighestMagnitude(tableau);
 			int pivotElementIndex = getLowestTestRatio(tableau,pivotColumnIndex);
 			normalizePivotElementRow(tableau,pivotElementIndex,pivotColumnIndex);
 			applyGaussJordan(tableau,pivotElementIndex,pivotColumnIndex);
 			updateBasicSolution();
-			viewTableau();
+			tableauMatrix.append(viewBasicSolution());
+			tableauMatrix.append(viewTableau());
 		}
+		
+		tableauPanel.add(tableauMatrix);
+		tableauPanel.add(scroll);
+		optimizedTableauFrame.add(tableauPanel);
+		optimizedTableauFrame.setSize(800, 800);
+		optimizedTableauFrame.setVisible(true);
+		optimizedTableauFrame.pack();
+		optimizedTableauFrame.validate();
+	}
+	
+	String viewTableau() {
+		// TODO Auto-generated method stub
+		String retVal = "==\n";
+		for(int i=0;i<numOfRows;i++){
+			for(int j = 0;j<numOfColumns;j++){
+				retVal+= tableau[i][j]+" ";
+			}
+			retVal+="\n";
+		}
+		return retVal;
 		
 	}
 	
-	void viewTableau() {
-		// TODO Auto-generated method stub
-		for(int i=0;i<numOfRows;i++){
-			for(int j = 0;j<numOfColumns;j++){
-				System.out.print(tableau[i][j]+" ");
-			}
-			System.out.println("");
-		}
-		
-	}
+	
 	private void applyGaussJordan(double[][] tableau, int pivotElementIndex, int pivotColumnIndex) {
 		// TODO Auto-generated method stub
 		for(int i = 0; i < numOfRows;i++){
