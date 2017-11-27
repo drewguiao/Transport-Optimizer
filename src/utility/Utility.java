@@ -13,7 +13,7 @@ public final class Utility {
 		// TODO Auto-generated method stub
 		int length = demand.length;
 		for(int i = 0; i < length ; i++){
-			System.out.print("DEM on D["+(i+1)+"]: ");
+			System.out.print("DEM on D["+i+"]: ");
 			demand[i] = scanner.nextFloat();
 			validateNonNegativity(demand[i]);
 		}
@@ -24,7 +24,7 @@ public final class Utility {
 		// TODO Auto-generated method stub
 		int length = capacity.length;
 		for(int i = 0; i < length ; i++){
-			System.out.print("CAP on S["+(i+1)+"]: ");
+			System.out.print("CAP on S["+i+"]: ");
 			capacity[i] = scanner.nextFloat();
 			validateNonNegativity(capacity[i]);
 		}
@@ -37,7 +37,7 @@ public final class Utility {
 		float cost = 0;
 		for(int i = 0; i < row; i++){
 			for(int j = 0 ; j < column; j++){
-				System.out.print("COST on S["+(i+1)+"]D["+(j+1)+"]: ");
+				System.out.print("COST on S["+i+"]D["+j+"]: ");
 				cost = scanner.nextFloat();
 				validateNonNegativity(cost);
 				matrix.setCost(cost,i,j);
@@ -79,7 +79,7 @@ public final class Utility {
 		int length = matrix.getColumn();
 		matrix.initializeObjectiveFunction(length);
 		for(int i=0;i<length;i++){
-			System.out.print("Enter value for V["+i+"]: ");
+			System.out.print("Enter coefficient for x["+i+"]: ");
 			matrix.setObjectiveFunctionCoefficients(scanner.nextFloat(), i);
 			
 		}

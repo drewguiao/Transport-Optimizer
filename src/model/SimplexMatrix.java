@@ -67,7 +67,7 @@ public class SimplexMatrix extends Constants{
 	public void viewObjectiveFunction(){
 		List<String> listOfVariables = new ArrayList<String>();
 		for(int i = 0; i < objectiveFunction.length;i++){
-			listOfVariables.add(""+objectiveFunction[i]+"v["+i+"] ");
+			listOfVariables.add(""+objectiveFunction[i]+"x["+i+"] ");
 		}
 		
 		 System.out.println(joinVariables(listOfVariables));
